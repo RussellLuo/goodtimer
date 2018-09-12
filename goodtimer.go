@@ -16,8 +16,8 @@ func NewGoodTimer(t *time.Timer) *GoodTimer {
 	return &GoodTimer{t: t}
 }
 
-// ReadC read and return the time value from the wrapped timer's channel C.
-// It returns a zero time value if the wrapped timer's channel C has already been read from.
+// ReadC waits until it can read from the wrapped timer's channel C.
+// It returns the time value received from the channel C, a zero time value if the channel C has already been read from.
 func (gt *GoodTimer) ReadC() time.Time {
 	if gt.read {
 		return time.Time{}
@@ -27,8 +27,8 @@ func (gt *GoodTimer) ReadC() time.Time {
 	return tv
 }
 
-// TryReadC is a non-blocking version of ReadC, and it will wait for at most the duration d.
-// Like ReadC, it returns a zero time value if the wrapped timer's channel C has already been read from.
+// TryReadC waits for at most the duration d, in order to read from the wrapped timer's channel C.
+// It returns the time value received from the channel C, a zero time value if the channel C has already been read from or if the timeout is reached.
 func (gt *GoodTimer) TryReadC(timeout time.Duration) time.Time {
 	if gt.read {
 		return time.Time{}
@@ -45,8 +45,8 @@ func (gt *GoodTimer) TryReadC(timeout time.Duration) time.Time {
 // Reset changes the timer to expire after duration d.
 //
 // Implementation reference:
-//     - https://github.com/golang/go/issues/11513#issuecomment-157062583
-//     - https://groups.google.com/d/msg/golang-dev/c9UUfASVPoU/tlbK2BpFEwAJ
+// - https://github.com/golang/go/issues/11513#issuecomment-157062583
+// - https://groups.google.com/d/msg/golang-dev/c9UUfASVPoU/tlbK2BpFEwAJ
 func (gt *GoodTimer) Reset(d time.Duration) {
 	gt.Stop()
 	gt.t.Reset(d)
@@ -57,7 +57,7 @@ func (gt *GoodTimer) Reset(d time.Duration) {
 // It returns true if the call stops the timer, false if the timer has already expired or been stopped.
 //
 // Implementation reference:
-//     - https://golang.org/pkg/time/#Timer.Stop
+// - https://golang.org/pkg/time/#Timer.Stop
 func (gt *GoodTimer) Stop() bool {
 	stopped := gt.t.Stop()
 	if !stopped && !gt.read {
