@@ -43,7 +43,7 @@ if !t.Stop() {
 	default:
 	}
 }
-``
+```
 
 However, [there is a race condition between draining the channel and sending time into the channel][4].
 
@@ -53,9 +53,9 @@ Finally, the rules of thumb are:
 - The programm should manage an extra status showing whether it has received from the Timer's channel or not.
 
 
-### [Timer.Reset][5]
+### Timer.Reset
 
-To reset a timer, is must have expired or be stopped before. So [Timer.Reset][5] has almost the same issue with [Timer.Stop[3].
+To reset a timer, is must have expired or be stopped before. So [Timer.Reset][5] has almost the same issue with [Timer.Stop][3].
 
 Some issues and the corresponding suggested solutions:
 
