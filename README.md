@@ -45,22 +45,20 @@ if !t.Stop() {
 }
 ```
 
-However, [there is a race condition between draining the channel and sending time into the channel][4].
-
-Finally, the rules of thumb are:
-
-- [Timer.Stop][3] should not be done concurrent to other receives from the Timer's channel.
-- The programm should manage an extra status showing whether it has received from the Timer's channel or not.
+However, [there is a race condition][4] between draining the channel and sending time into the channel, which may lead to a undrained channel.
 
 
 ### Timer.Reset
 
 To reset a timer, is must have expired or be stopped before. So [Timer.Reset][5] has almost the same issue with [Timer.Stop][3].
 
-Some issues and the corresponding suggested solutions:
 
-- [time: Timer.C can still trigger even after Timer.Reset is called][6] ([suggested solution][7])
-- [Timer.Reset][8] ([suggested solution][9])
+### Solutions
+
+Finally, as [Russ Cox][6] suggested ([here][7] and [here][8]), the correct way to use [time.Timer][1] is:
+
+- All the Timer operations ([Timer.Stop][3], [Timer.Reset][5] and receiving from or draining the channel) should be done in the same goroutine.
+- The program should manage an extra status showing whether it has received from the Timer's channel or not.
 
 
 [1]: https://golang.org/pkg/time/#Timer
@@ -68,7 +66,6 @@ Some issues and the corresponding suggested solutions:
 [3]: https://golang.org/pkg/time/#Timer.Stop
 [4]: https://github.com/golang/go/issues/14383#issuecomment-185977844
 [5]: https://golang.org/pkg/time/#Timer.Reset
-[6]: https://github.com/golang/go/issues/11513
+[6]: https://github.com/rsc
 [7]: https://github.com/golang/go/issues/11513#issuecomment-157062583
-[8]: https://groups.google.com/forum/#!topic/golang-dev/c9UUfASVPoU
-[9]: https://groups.google.com/d/msg/golang-dev/c9UUfASVPoU/tlbK2BpFEwAJ
+[8]: https://groups.google.com/d/msg/golang-dev/c9UUfASVPoU/tlbK2BpFEwAJ
