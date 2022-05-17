@@ -1,6 +1,7 @@
 package goodtimer_test
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -12,7 +13,8 @@ func Example_blockingRead() {
 	gt := goodtimer.NewGoodTimer(t)
 
 	// Read from the wrapped timer's channel C.
-	if tv := gt.ReadC(); !tv.IsZero() {
+	ctx := context.Background()
+	if tv := gt.ReadC(ctx); !tv.IsZero() {
 		fmt.Println("The timer fires")
 	}
 
@@ -25,7 +27,9 @@ func Example_nonBlockingRead() {
 	gt := goodtimer.NewGoodTimer(t)
 
 	// Read from the wrapped timer's channel C, in a non-blocking way.
-	if tv := gt.TryReadC(1 * time.Second); tv.IsZero() {
+	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
+	defer cancel()
+	if tv := gt.ReadC(ctx); tv.IsZero() {
 		fmt.Println("Timed out before the timer firing")
 	}
 

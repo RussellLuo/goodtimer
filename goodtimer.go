@@ -1,6 +1,7 @@
 package goodtimer
 
 import (
+	"context"
 	"time"
 )
 
@@ -17,28 +18,18 @@ func NewGoodTimer(t *time.Timer) *GoodTimer {
 	return &GoodTimer{t: t}
 }
 
-// ReadC waits until it can read from the wrapped timer's channel C.
-// It returns the time value received from the channel C, a zero time value if the channel C has already been read from.
-func (gt *GoodTimer) ReadC() time.Time {
+// ReadC waits until it can read from the wrapped timer's channel C, or ctx's deadline, if any, expires.
+// It returns the time value received from the channel C, a zero time value if the channel C has already been read from or if ctx's deadline expires.
+func (gt *GoodTimer) ReadC(ctx context.Context) time.Time {
 	if gt.read {
 		return time.Time{}
 	}
-	tv := <-gt.t.C
-	gt.read = true
-	return tv
-}
 
-// TryReadC waits for at most the duration d, in order to read from the wrapped timer's channel C.
-// It returns the time value received from the channel C, a zero time value if the channel C has already been read from or if the timeout is reached.
-func (gt *GoodTimer) TryReadC(timeout time.Duration) time.Time {
-	if gt.read {
-		return time.Time{}
-	}
 	select {
 	case tv := <-gt.t.C:
 		gt.read = true
 		return tv
-	case <-time.After(timeout):
+	case <-ctx.Done():
 		return time.Time{}
 	}
 }
