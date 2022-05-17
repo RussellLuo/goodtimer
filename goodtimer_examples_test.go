@@ -8,11 +8,11 @@ import (
 	"github.com/RussellLuo/goodtimer"
 )
 
-func Example_blockingRead() {
+func Example_readC() {
 	t := time.NewTimer(2 * time.Second)
 	gt := goodtimer.NewGoodTimer(t)
 
-	// Read from the wrapped timer's channel C.
+	// Wait until we read from the wrapped timer's channel C.
 	ctx := context.Background()
 	if tv := gt.ReadC(ctx); !tv.IsZero() {
 		fmt.Println("The timer fires")
@@ -22,19 +22,19 @@ func Example_blockingRead() {
 	// The timer fires
 }
 
-func Example_nonBlockingRead() {
+func Example_readCWithTimeout() {
 	t := time.NewTimer(2 * time.Second)
 	gt := goodtimer.NewGoodTimer(t)
 
-	// Read from the wrapped timer's channel C, in a non-blocking way.
+	// Wait up to 1 second to read from the wrapped timer's channel C.
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
 	if tv := gt.ReadC(ctx); tv.IsZero() {
-		fmt.Println("Timed out before the timer firing")
+		fmt.Println("Timed out before the timer fires")
 	}
 
 	// Output:
-	// Timed out before the timer firing
+	// Timed out before the timer fires
 }
 
 func Example_stop() {
