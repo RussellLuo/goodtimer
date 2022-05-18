@@ -77,7 +77,7 @@ func TestGoodTimer_ReadC(t *testing.T) {
 
 			start := time.Now()
 			tv := gt.ReadC(ctx)
-			elapsed := time.Now().Sub(start)
+			elapsed := time.Since(start)
 
 			err := 10 * time.Millisecond
 			if int(elapsed/err) != int(c.waitingTime/err) {
@@ -129,7 +129,7 @@ func TestGoodTimer_Reset(t *testing.T) {
 
 			start := time.Now()
 			tv := gt.ReadC(context.Background())
-			elapsed := time.Now().Sub(start)
+			elapsed := time.Since(start)
 
 			err := 10 * time.Millisecond
 			if int(elapsed/err) != int(c.waitingTime/err) {
