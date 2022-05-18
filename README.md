@@ -7,6 +7,8 @@ Golang timer for humans.
 1. A library that helps you use [time.Timer][1] more easily.
 2. As well as a demonstration that shows you how to use [time.Timer][1] correctly.
 
+中文博客：[使用 Golang Timer 的正确方式](http://russellluo.com/2018/09/the-correct-way-to-use-timer-in-golang.html)。
+
 
 ## Installation
 
@@ -22,11 +24,11 @@ For usage and examples see the [Godoc][2].
 
 ## Why?!
 
-**TL;DR**: The standard [time.Timer][1] is hard to use correctly.
+**TL;DR**: The timer created with [time.NewTimer][9] is hard to use correctly.
 
 ### Timer.Stop
 
-Per the documentation of [Timer.Stop][3], to stop the timer created with NewTimer, you need to check the return value and drain the channel if necessary:
+Per the documentation of [Timer.Stop][3], to stop the timer created with [time.NewTimer][9], you need to check the return value and drain the channel if necessary:
 
 ```go
 if !t.Stop() {
@@ -62,10 +64,11 @@ Finally, as [Russ Cox][6] suggested ([here][7] and [here][8]), the correct way t
 
 
 [1]: https://golang.org/pkg/time/#Timer
-[2]: https://godoc.org/github.com/RussellLuo/goodtimer 
+[2]: https://pkg.go.dev/github.com/RussellLuo/goodtimer
 [3]: https://golang.org/pkg/time/#Timer.Stop
 [4]: https://github.com/golang/go/issues/14383#issuecomment-185977844
 [5]: https://golang.org/pkg/time/#Timer.Reset
 [6]: https://github.com/rsc
 [7]: https://github.com/golang/go/issues/11513#issuecomment-157062583
 [8]: https://groups.google.com/d/msg/golang-dev/c9UUfASVPoU/tlbK2BpFEwAJ
+[9]: https://pkg.go.dev/time#NewTimer

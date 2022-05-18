@@ -13,9 +13,9 @@ type GoodTimer struct {
 	read bool        // Whether t.C has already been read from
 }
 
-// NewGoodTimer creates an instance of GoodTimer.
-func NewGoodTimer(t *time.Timer) *GoodTimer {
-	return &GoodTimer{t: t}
+// New creates an instance of GoodTimer.
+func New(d time.Duration) *GoodTimer {
+	return &GoodTimer{t: time.NewTimer(d)}
 }
 
 // ReadC waits until it can read from the wrapped timer's channel C, or ctx's deadline, if any, expires.

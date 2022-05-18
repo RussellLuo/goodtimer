@@ -66,7 +66,7 @@ func TestGoodTimer_ReadC(t *testing.T) {
 	}
 	for _, c := range cases {
 		t.Run(c.name, func(t *testing.T) {
-			gt := goodtimer.NewGoodTimer(time.NewTimer(c.timerDuration))
+			gt := goodtimer.New(c.timerDuration)
 
 			ctx := context.Background()
 			if c.timeout != 0 {
@@ -120,7 +120,7 @@ func TestGoodTimer_Reset(t *testing.T) {
 	}
 	for _, c := range cases {
 		t.Run("", func(t *testing.T) {
-			gt := goodtimer.NewGoodTimer(time.NewTimer(c.timerDuration))
+			gt := goodtimer.New(c.timerDuration)
 
 			if c.readCBeforeReset {
 				gt.ReadC(context.Background())
@@ -169,7 +169,7 @@ func TestGoodTimer_Stop(t *testing.T) {
 	}
 	for _, c := range cases {
 		t.Run("", func(t *testing.T) {
-			gt := goodtimer.NewGoodTimer(time.NewTimer(c.timerDuration))
+			gt := goodtimer.New(c.timerDuration)
 
 			if c.readCBeforeStop {
 				gt.ReadC(context.Background())

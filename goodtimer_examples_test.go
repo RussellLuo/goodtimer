@@ -9,8 +9,7 @@ import (
 )
 
 func Example_readC() {
-	t := time.NewTimer(2 * time.Second)
-	gt := goodtimer.NewGoodTimer(t)
+	gt := goodtimer.New(2 * time.Second)
 
 	// Wait until we read from the wrapped timer's channel C.
 	ctx := context.Background()
@@ -23,8 +22,7 @@ func Example_readC() {
 }
 
 func Example_readCWithTimeout() {
-	t := time.NewTimer(2 * time.Second)
-	gt := goodtimer.NewGoodTimer(t)
+	gt := goodtimer.New(2 * time.Second)
 
 	// Wait up to 1 second to read from the wrapped timer's channel C.
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
@@ -38,8 +36,7 @@ func Example_readCWithTimeout() {
 }
 
 func Example_stop() {
-	t := time.NewTimer(2 * time.Second)
-	gt := goodtimer.NewGoodTimer(t)
+	gt := goodtimer.New(2 * time.Second)
 
 	// Any operations in the current goroutine.
 
@@ -52,8 +49,7 @@ func Example_stop() {
 }
 
 func Example_reset() {
-	t := time.NewTimer(2 * time.Second)
-	gt := goodtimer.NewGoodTimer(t)
+	gt := goodtimer.New(2 * time.Second)
 
 	// Any operations in the current goroutine.
 
